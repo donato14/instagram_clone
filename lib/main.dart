@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/style.dart' as appBarStyle;
 
 void main() {
   runApp(
     MaterialApp(
-      theme: ThemeData(
-        iconTheme: IconThemeData( color: Colors.blue ),
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          centerTitle: false,
-          titleTextStyle: TextStyle(color: Colors.black, fontSize: 18),
-          actionsIconTheme: IconThemeData(color: Colors.black)
-        ),
-        textTheme: TextTheme(
-          bodyText2: TextStyle(color: Colors.red)
-        )
-      ),
+      theme: appBarStyle.theme,
       home: MyApp()
     )
   );
@@ -28,9 +18,27 @@ class MyApp extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Instagram', textAlign: TextAlign.left,),
-        actions: [Icon(Icons.add_box_outlined)],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add_box_outlined),
+            onPressed: (){},
+            iconSize: 30,
+          )
+        ],
       ),
-      body: Text('하이')
+      body: Text('안녕', style: Theme.of(context).textTheme.bodyText2,),
+      bottomNavigationBar: BottomAppBar(
+        child: SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.home_outlined),
+              Icon(Icons.shopping_bag_outlined)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
