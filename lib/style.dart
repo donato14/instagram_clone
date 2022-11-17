@@ -12,5 +12,10 @@ var theme = ThemeData(
     textTheme: TextTheme(
         bodyText2: TextStyle(color: Colors.grey)
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        elevation: 2,
+        selectedItemColor: Colors.black
+    )
 
 );
