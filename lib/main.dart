@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/style.dart' as appBarStyle;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(
@@ -19,8 +21,25 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+  var data = [];
 
+  getData() async{
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
 
+    result.statusCode;
+
+    var result2 = jsonDecode(result.body);
+    setState(() {
+      data = result2;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: [content(), Text('샵페이지')][tab],
+      body: [content( data : data), Text('샵페이지')][tab],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -62,25 +81,38 @@ class _MyAppState extends State<MyApp> {
 }
 
 class content extends StatelessWidget {
-  const content({Key? key}) : super(key: key);
+  const content({Key? key, this.data}) : super(key: key);
+  final data;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 3,
-      itemBuilder: (context, i) {
-        return SizedBox(
-          height: 300,
-          child: Column(
-            children: [
-              Image.asset('/car2.png'),
-              Text('좋아요 100',textAlign: TextAlign.right),
-              Text('글쓴이'),
-              Text('글내용')
-            ],
-          ),
-        );
-      }
-    );
+    if (data.isNotEmpty) {
+      return ListView.builder(
+          itemCount: 3,
+          itemBuilder: (context, i) {
+            return Column(
+              children: [
+                Container(
+                  constraints: BoxConstraints(maxWidth: 600),
+                  padding: EdgeInsets.all(20),
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(data[i]['image']),
+                      Text(data[i]['content']),
+                      Text(data[i]['user']),
+                      Text(data[i]['date'])
+                    ],
+                  ),
+                )
+              ],
+
+            );
+          }
+      );
+    } else {
+      return Text('로딩중');
+    }
   }
 }
