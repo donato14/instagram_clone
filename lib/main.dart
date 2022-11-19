@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/style.dart' as appBarStyle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(
@@ -80,15 +81,49 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class content extends StatelessWidget {
-  const content({Key? key, this.data}) : super(key: key);
-  final data;
+class content extends StatefulWidget {
+  content({Key? key, this.data}) : super(key: key);
+  var data;
+
+  @override
+  State<content> createState() => _contentState();
+}
+
+class _contentState extends State<content> {
+
+  var scroll = ScrollController();
+
+
+  getMore() async{
+    var moreData = await http.get(Uri.parse('https://codingapple1.github.io/app/more1.json'));
+
+    moreData.statusCode;
+
+    var result2 = jsonDecode(moreData.body);
+    setState(() {
+      widget.data = [...widget.data, result2];
+      print(widget.data);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scroll.addListener(() {
+      print(scroll.position.pixels);
+      if(scroll.position.pixels == scroll.position.maxScrollExtent){
+        getMore();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (data.isNotEmpty) {
+    if (widget.data.isNotEmpty) {
       return ListView.builder(
-          itemCount: 3,
+          itemCount: widget.data.length,
+          controller: scroll,
           itemBuilder: (context, i) {
             return Column(
               children: [
@@ -99,10 +134,10 @@ class content extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.network(data[i]['image']),
-                      Text(data[i]['content']),
-                      Text(data[i]['user']),
-                      Text(data[i]['date'])
+                      Image.network(widget.data[i]['image']),
+                      Text('좋아요 ${widget.data[i]['likes']}'),
+                      Text(widget.data[i]['user']),
+                      Text(widget.data[i]['date'])
                     ],
                   ),
                 )
