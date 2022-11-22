@@ -3,12 +3,19 @@ import 'package:instagram_clone/style.dart' as appBarStyle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
+import 'package:instagram_clone/upload.dart' as Uploda;
 
 void main() {
   runApp(
     MaterialApp(
       theme: appBarStyle.theme,
-      home: MyApp()
+      //라우트 사용시
+      // initialRoute: '/',
+      // routes: {
+      //   '/' : (c) =>Text('첫번째 페이지'),
+      //   '/detail' : (c) => Text('둘째 페이지')
+      // },
+      //home: MyApp()
     )
   );
 }
@@ -50,7 +57,11 @@ class _MyAppState extends State<MyApp> {
         actions: [
           IconButton(
             icon: Icon(Icons.add_box_outlined),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (c) => Uploda.Upload() )
+              );
+            },
             iconSize: 30,
           )
         ],
