@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 
 class Upload extends StatelessWidget {
-  const Upload({Key? key}) : super(key: key);
+  const Upload({Key? key, this.userImage}) : super(key: key);
+  final userImage;
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class Upload extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('이미지업로드화면'),
+          Image.file(userImage),
           IconButton(
             onPressed: (){
               Navigator.pop(context);

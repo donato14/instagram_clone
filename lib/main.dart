@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
 import 'package:instagram_clone/upload.dart' as Uploda;
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main() {
   runApp(
@@ -15,7 +17,7 @@ void main() {
       //   '/' : (c) =>Text('첫번째 페이지'),
       //   '/detail' : (c) => Text('둘째 페이지')
       // },
-      //home: MyApp()
+      home: MyApp()
     )
   );
 }
@@ -30,6 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
+  var userImage;
 
   getData() async{
     var result = await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
@@ -57,9 +60,17 @@ class _MyAppState extends State<MyApp> {
         actions: [
           IconButton(
             icon: Icon(Icons.add_box_outlined),
-            onPressed: (){
+            onPressed: () async {
+              var picker = ImagePicker();
+              var image = await picker.pickImage(source: ImageSource.gallery);
+              if (image != null){
+                setState(() {
+                  userImage = File(image.path);
+                });
+              }
+
               Navigator.push(context,
-                MaterialPageRoute(builder: (c) => Uploda.Upload() )
+                MaterialPageRoute(builder: (c) => Uploda.Upload(userImage : userImage) )
               );
             },
             iconSize: 30,
