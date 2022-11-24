@@ -33,6 +33,28 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
   var userImage;
+  var userContent;
+
+  addMyData(){
+    var myData = {
+      'id' : data.length,
+      'image' : userImage,
+      'likes' : 5,
+      'date': 'July 25',
+      'content' : userContent,
+      'liked' : false,
+      'user' : 'John Kim'
+    };
+    setState(() {
+      data.insert(0, myData);
+    });
+  }
+
+  setUserContent(a){
+    setState(() {
+      userContent = a;
+    });
+  }
 
   getData() async{
     var result = await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
@@ -70,7 +92,7 @@ class _MyAppState extends State<MyApp> {
               }
 
               Navigator.push(context,
-                MaterialPageRoute(builder: (c) => Uploda.Upload(userImage : userImage) )
+                MaterialPageRoute(builder: (c) => Uploda.Upload(userImage : userImage, setUserContent : setUserContent, addMyData : addMyData) )
               );
             },
             iconSize: 30,
@@ -156,7 +178,9 @@ class _contentState extends State<content> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.network(widget.data[i]['image']),
+                      widget.data[i]['image'].runtimeType == String
+                          ? Image.network(widget.data[i]['image'])
+                          : Image.file(widget.data[i]['image']),
                       Text('좋아요 ${widget.data[i]['likes']}'),
                       Text(widget.data[i]['user']),
                       Text(widget.data[i]['date'])
