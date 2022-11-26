@@ -6,17 +6,18 @@ import 'package:flutter/rendering.dart';
 import 'package:instagram_clone/upload.dart' as Uploda;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
     MaterialApp(
       theme: appBarStyle.theme,
       //라우트 사용시
-      initialRoute: '/',
-      routes: {
-        '/' : (c) =>Text('첫번째 페이지'),
-        '/detail' : (c) => Text('둘째 페이지')
-      },
+      // initialRoute: '/',
+      // routes: {
+      //   '/' : (c) =>Text('첫번째 페이지'),
+      //   '/detail' : (c) => Text('둘째 페이지')
+      // },
       home: MyApp()
     )
   );
@@ -34,6 +35,20 @@ class _MyAppState extends State<MyApp> {
   var data = [];
   var userImage;
   var userContent;
+
+  saveData() async{
+    var storage = await SharedPreferences.getInstance(); //저장공간 오픈
+    storage.setString('name', 'john');
+
+    // storage.remove('name');
+    var map = {'age' : 20};
+    storage.setString('map', jsonEncode(map));
+    var result2 = storage.getString('map') ?? 'NullCheck';
+    print(jsonDecode(result2)['age']);
+
+    var result = storage.getString('name');
+    print(result);
+  }
 
   addMyData(){
     var myData = {
@@ -71,6 +86,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    saveData();
     getData();
   }
 
