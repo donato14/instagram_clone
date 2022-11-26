@@ -12,11 +12,11 @@ void main() {
     MaterialApp(
       theme: appBarStyle.theme,
       //라우트 사용시
-      // initialRoute: '/',
-      // routes: {
-      //   '/' : (c) =>Text('첫번째 페이지'),
-      //   '/detail' : (c) => Text('둘째 페이지')
-      // },
+      initialRoute: '/',
+      routes: {
+        '/' : (c) =>Text('첫번째 페이지'),
+        '/detail' : (c) => Text('둘째 페이지')
+      },
       home: MyApp()
     )
   );
