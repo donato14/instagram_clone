@@ -1,12 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/style.dart' as appBarStyle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
 import 'package:instagram_clone/upload.dart' as Uploda;
+import 'package:instagram_clone/Profile.dart' as Profile;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(
@@ -171,7 +174,7 @@ class _contentState extends State<content> {
     // TODO: implement initState
     super.initState();
     scroll.addListener(() {
-      print(scroll.position.pixels);
+      // print(scroll.position.pixels);
       if(scroll.position.pixels == scroll.position.maxScrollExtent){
         getMore();
       }
@@ -197,9 +200,33 @@ class _contentState extends State<content> {
                       widget.data[i]['image'].runtimeType == String
                           ? Image.network(widget.data[i]['image'])
                           : Image.file(widget.data[i]['image']),
+
+                      GestureDetector(
+                        child: Text(widget.data[i]['user']),
+                        onTap: (){
+                          Navigator.push(context,
+                            // MaterialPageRoute(builder: (c) => Profile.Profile())
+                            // CupertinoPageRoute(builder: (c) => Profile.Profile())
+                            PageRouteBuilder(
+                              pageBuilder: (c, a1, a2) => Profile.Profile(),
+                              transitionsBuilder: (c, a1, a2, child) =>
+                                // FadeTransition(opacity: a1, child: child,),
+                                SlideTransition(
+                                    position: Tween(
+                                      begin: Offset(-1.0, 0.0),
+                                      end: Offset(0.0, 0.0),
+                                    ).animate(a1),
+                                  child: child,
+                                ),
+                              transitionDuration: Duration(milliseconds: 500)
+                            )
+                          );
+                        },
+                        // onDoubleTap: (){},
+                      ),
                       Text('좋아요 ${widget.data[i]['likes']}'),
-                      Text(widget.data[i]['user']),
-                      Text(widget.data[i]['date'])
+                      Text(widget.data[i]['date']),
+                      Text(widget.data[i]['content']),
                     ],
                   ),
                 )
