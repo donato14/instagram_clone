@@ -7,21 +7,25 @@ import 'package:flutter/rendering.dart';
 import 'package:instagram_clone/upload.dart' as Uploda;
 import 'package:instagram_clone/Profile.dart' as Profile;
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: appBarStyle.theme,
-      //라우트 사용시
-      // initialRoute: '/',
-      // routes: {
-      //   '/' : (c) =>Text('첫번째 페이지'),
-      //   '/detail' : (c) => Text('둘째 페이지')
-      // },
-      home: MyApp()
+    ChangeNotifierProvider(
+      create: (c) => Store1(),
+      child: MaterialApp(
+        theme: appBarStyle.theme,
+        //라우트 사용시
+        // initialRoute: '/',
+        // routes: {
+        //   '/' : (c) =>Text('첫번째 페이지'),
+        //   '/detail' : (c) => Text('둘째 페이지')
+        // },
+        home: MyApp()
+      ),
     )
   );
 }
@@ -206,20 +210,20 @@ class _contentState extends State<content> {
                         onTap: (){
                           Navigator.push(context,
                             // MaterialPageRoute(builder: (c) => Profile.Profile())
-                            // CupertinoPageRoute(builder: (c) => Profile.Profile())
-                            PageRouteBuilder(
-                              pageBuilder: (c, a1, a2) => Profile.Profile(),
-                              transitionsBuilder: (c, a1, a2, child) =>
-                                // FadeTransition(opacity: a1, child: child,),
-                                SlideTransition(
-                                    position: Tween(
-                                      begin: Offset(-1.0, 0.0),
-                                      end: Offset(0.0, 0.0),
-                                    ).animate(a1),
-                                  child: child,
-                                ),
-                              transitionDuration: Duration(milliseconds: 500)
-                            )
+                            CupertinoPageRoute(builder: (c) => Profile.Profile())
+                            // PageRouteBuilder(
+                            //   pageBuilder: (c, a1, a2) => Profile.Profile(),
+                            //   transitionsBuilder: (c, a1, a2, child) =>
+                            //     // FadeTransition(opacity: a1, child: child,),
+                            //     SlideTransition(
+                            //         position: Tween(
+                            //           begin: Offset(-1.0, 0.0),
+                            //           end: Offset(0.0, 0.0),
+                            //         ).animate(a1),
+                            //       child: child,
+                            //     ),
+                            //   transitionDuration: Duration(milliseconds: 500)
+                            // )
                           );
                         },
                         // onDoubleTap: (){},
@@ -237,6 +241,28 @@ class _contentState extends State<content> {
       );
     } else {
       return Text('로딩중');
+    }
+  }
+}
+
+class Store1 extends ChangeNotifier {
+  var name = 'john kim';
+  var follower = 0;
+  var clickCheck = 0;
+  changeName(){
+    name = 'john park';
+    notifyListeners();
+  }
+  changeFollower(){
+    if(clickCheck == 0) {
+      follower++;
+      clickCheck++;
+      notifyListeners();
+    }
+    else if (clickCheck == 1){
+      follower--;
+      clickCheck--;
+      notifyListeners();
     }
   }
 }
