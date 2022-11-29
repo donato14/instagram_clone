@@ -14,8 +14,11 @@ import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (c) => Store1(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => Store1()),
+        ChangeNotifierProvider(create: (c) => Store2())
+      ],
       child: MaterialApp(
         theme: appBarStyle.theme,
         //라우트 사용시
@@ -249,6 +252,17 @@ class Store1 extends ChangeNotifier {
   var name = 'john kim';
   var follower = 0;
   var clickCheck = 0;
+  var profileImage = [];
+
+  getData() async{
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app/profile.json'));
+    var result2 = jsonDecode(result.body);
+
+    profileImage = result2;
+    notifyListeners();
+  }
+
+
   changeName(){
     name = 'john park';
     notifyListeners();
@@ -265,4 +279,9 @@ class Store1 extends ChangeNotifier {
       notifyListeners();
     }
   }
+}
+
+class Store2 extends ChangeNotifier {
+  // 스토어를 두개 만들었을시
+  var name2 = 'john doe';
 }
