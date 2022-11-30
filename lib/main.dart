@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/notification.dart';
 import 'package:instagram_clone/style.dart' as appBarStyle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -98,11 +99,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     saveData();
     getData();
+    initNotification();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(child: Text('+'), onPressed: (){
+        showNotification();
+      },),
       appBar: AppBar(
         title: Text('Instagram', textAlign: TextAlign.left,),
         actions: [
