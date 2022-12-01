@@ -97,9 +97,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    initNotification();
     saveData();
     getData();
-    initNotification();
   }
 
   @override
