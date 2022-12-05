@@ -13,7 +13,13 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initalizeApp(
+    option: DefaultFirebase
+  )
+
   runApp(
     MultiProvider(
       providers: [
