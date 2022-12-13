@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/notification.dart';
+import 'package:instagram_clone/shop.dart';
 import 'package:instagram_clone/style.dart' as appBarStyle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,12 +14,15 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_option.dart';
+
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initalizeApp(
-    option: DefaultFirebase
-  )
+    option: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MultiProvider(
@@ -136,7 +140,9 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: [content( data : data), Text('샵페이지')][tab],
+
+      body: [content( data : data), Shop()][tab],
+
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
